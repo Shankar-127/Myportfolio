@@ -6,15 +6,57 @@
 <title>Shankar Portfolio</title>
 <style>
   :root {
-    --bg: #f8fafc;
-    --bg-soft: #eef2ff;
+    --bg-grad-1: #f8fafc;
+    --bg-grad-2: #ecfeff;
+    --bg-grad-3: #fff7ed;
+    --blob-1: #38bdf8;
+    --blob-2: #fb923c;
     --text: #0f172a;
+    --heading: #0f172a;
     --muted: #334155;
     --accent: #0ea5e9;
     --accent-2: #f97316;
+    --link: #0369a1;
+    --link-hover: #0c4a6e;
     --surface: rgba(255, 255, 255, 0.72);
     --border: rgba(15, 23, 42, 0.12);
+    --nav-bg: rgba(255, 255, 255, 0.7);
+    --footer-bg: rgba(224, 242, 254, 0.7);
+    --input-bg: rgba(255, 255, 255, 0.85);
+    --section-border: rgba(15, 23, 42, 0.08);
+    --soft-text: #1e293b;
+    --project-title: #075985;
+    --project-tools: #475569;
     --glow: 0 18px 50px rgba(14, 165, 233, 0.2);
+    --cursor-dot: rgba(2, 132, 199, 0.95);
+    --cursor-ring: rgba(249, 115, 22, 0.45);
+  }
+
+  :root[data-theme="dark"] {
+    --bg-grad-1: #020617;
+    --bg-grad-2: #0f172a;
+    --bg-grad-3: #111827;
+    --blob-1: #0284c7;
+    --blob-2: #ea580c;
+    --text: #e2e8f0;
+    --heading: #f8fafc;
+    --muted: #cbd5e1;
+    --accent: #38bdf8;
+    --accent-2: #fb923c;
+    --link: #7dd3fc;
+    --link-hover: #bae6fd;
+    --surface: rgba(15, 23, 42, 0.75);
+    --border: rgba(148, 163, 184, 0.28);
+    --nav-bg: rgba(2, 6, 23, 0.8);
+    --footer-bg: rgba(2, 6, 23, 0.85);
+    --input-bg: rgba(15, 23, 42, 0.9);
+    --section-border: rgba(148, 163, 184, 0.2);
+    --soft-text: #cbd5e1;
+    --project-title: #7dd3fc;
+    --project-tools: #94a3b8;
+    --glow: 0 18px 45px rgba(14, 165, 233, 0.18);
+    --cursor-dot: rgba(125, 211, 252, 0.95);
+    --cursor-ring: rgba(251, 146, 60, 0.42);
   }
 
   *, *::before, *::after {
@@ -31,11 +73,31 @@
     color: var(--text);
     line-height: 1.6;
     background:
-      radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.18), transparent 38%),
-      radial-gradient(circle at 85% 8%, rgba(249, 115, 22, 0.18), transparent 40%),
-      linear-gradient(160deg, #f8fafc 0%, #ecfeff 48%, #fff7ed 100%);
+      radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 38%),
+      radial-gradient(circle at 85% 8%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 40%),
+      linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 48%, var(--bg-grad-3) 100%);
     background-attachment: fixed;
     overflow-x: hidden;
+    transition: color 0.3s ease, background 0.4s ease;
+  }
+
+  #web-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  body.custom-cursor,
+  body.custom-cursor a,
+  body.custom-cursor button,
+  body.custom-cursor .btn,
+  body.custom-cursor input,
+  body.custom-cursor textarea {
+    cursor: none;
   }
 
   body::before,
@@ -55,25 +117,25 @@
   body::before {
     left: -10vmax;
     top: -10vmax;
-    background: #38bdf8;
+    background: var(--blob-1);
   }
 
   body::after {
     right: -14vmax;
     bottom: -10vmax;
-    background: #fb923c;
+    background: var(--blob-2);
     animation-delay: -6s;
   }
 
   a {
-    color: #0369a1;
+    color: var(--link);
     text-decoration: none;
     transition: color 0.25s ease;
   }
 
   a:hover,
   a:focus {
-    color: #0c4a6e;
+    color: var(--link-hover);
     outline: none;
   }
 
@@ -92,17 +154,63 @@
   nav {
     position: sticky;
     top: 0;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--nav-bg);
     backdrop-filter: blur(14px) saturate(150%);
     border-bottom: 1px solid var(--border);
     z-index: 999;
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
-  nav ul {
-    margin: 0;
-    padding: 0.9rem 1rem;
+  .nav-inner {
+    width: min(94%, 1060px);
+    margin: 0 auto;
+    padding: 0.65rem 0;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    box-shadow: none;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .nav-toggle .bar {
+    width: 20px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--text);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  #primary-menu {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 0.25rem 0.5rem;
     list-style: none;
@@ -125,7 +233,7 @@
     bottom: 7px;
     width: 72%;
     height: 2px;
-    background: linear-gradient(90deg, #0ea5e9, #f97316);
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.28s ease;
@@ -136,12 +244,29 @@
     transform: scaleX(1);
   }
 
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: none;
+    white-space: nowrap;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    transform: translateY(-1px);
+  }
+
   h1,
   h2,
   h3 {
     font-weight: 700;
     letter-spacing: 0.01em;
-    color: #0f172a;
+    color: var(--heading);
     margin-bottom: 0.5rem;
   }
 
@@ -169,6 +294,7 @@
     border-radius: 18px;
     box-shadow: var(--glow);
     backdrop-filter: blur(10px);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .card {
@@ -180,8 +306,8 @@
   .card:hover,
   .card:focus-within {
     transform: translateY(-8px);
-    border-color: rgba(14, 165, 233, 0.4);
-    box-shadow: 0 20px 45px rgba(14, 165, 233, 0.26);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    box-shadow: 0 20px 45px color-mix(in srgb, var(--accent) 36%, transparent);
   }
 
   button,
@@ -209,7 +335,7 @@
 
   button:focus-visible,
   .btn:focus-visible {
-    outline: 2px solid #0c4a6e;
+    outline: 2px solid var(--link-hover);
     outline-offset: 2px;
   }
 
@@ -217,6 +343,25 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .service-box h3 {
+    margin-top: 0;
+    color: var(--project-title);
+  }
+
+  .services-cta {
+    margin-top: 1rem;
+    font-weight: 600;
+    color: var(--soft-text);
+    text-align: center;
   }
 
   .skills-columns {
@@ -231,7 +376,7 @@
   }
 
   .skill-column h3 {
-    color: #0c4a6e;
+    color: var(--link-hover);
   }
 
   .skill-list {
@@ -259,20 +404,27 @@
   textarea {
     font-family: inherit;
     font-size: 1rem;
+    color: var(--text);
     padding: 0.6rem 0.7rem;
-    border: 1.5px solid rgba(2, 132, 199, 0.22);
+    border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
     border-radius: 10px;
     resize: vertical;
     min-height: 42px;
-    background: rgba(255, 255, 255, 0.85);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: var(--input-bg);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  textarea::placeholder {
+    color: color-mix(in srgb, var(--muted) 72%, transparent);
   }
 
   input[type="text"]:focus,
   input[type="email"]:focus,
   textarea:focus {
-    border-color: #0284c7;
-    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.17);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
     outline: none;
   }
 
@@ -284,28 +436,29 @@
     text-align: center;
     padding: 1.1rem;
     font-size: 0.9rem;
-    background: rgba(224, 242, 254, 0.7);
+    background: var(--footer-bg);
     border-top: 1px solid var(--border);
-    color: #0f172a;
+    color: var(--text);
     position: relative;
     margin-top: 2rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
 
   .social-links a {
     margin: 0 0.5rem;
-    color: #0369a1;
+    color: var(--link);
     font-weight: 600;
   }
 
   .social-links a:hover,
   .social-links a:focus {
-    color: #0c4a6e;
+    color: var(--link-hover);
   }
 
   section {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    border-bottom: 1px solid var(--section-border);
   }
 
   #home {
@@ -326,7 +479,7 @@
     object-fit: cover;
     margin: 0.7rem auto 1rem;
     display: block;
-    border: 3px solid rgba(255, 255, 255, 0.8);
+    border: 3px solid color-mix(in srgb, white 80%, transparent);
     box-shadow: 0 14px 30px rgba(2, 132, 199, 0.28);
     animation: pulseGlow 4.5s ease-in-out infinite;
   }
@@ -342,7 +495,7 @@
     max-width: 570px;
     margin: 0 auto;
     font-weight: 500;
-    color: #1e293b;
+    color: var(--soft-text);
   }
 
   .project-card {
@@ -353,7 +506,7 @@
 
   .project-title {
     font-weight: 700;
-    color: #075985;
+    color: var(--project-title);
     margin-bottom: 0.5rem;
   }
 
@@ -361,13 +514,13 @@
     flex-grow: 1;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
-    color: #334155;
+    color: var(--muted);
   }
 
   .project-tools {
     font-style: italic;
     font-size: 0.9rem;
-    color: #475569;
+    color: var(--project-tools);
     margin-bottom: 0.8rem;
   }
 
@@ -375,7 +528,7 @@
     max-width: 800px;
     margin: 0 auto;
     font-weight: 500;
-    color: #334155;
+    color: var(--muted);
   }
 
   #achievements ul {
@@ -398,8 +551,44 @@
     transform: translateY(0) scale(1);
   }
 
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1300;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .cursor-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cursor-dot);
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--cursor-ring);
+    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .cursor-ring.is-active {
+    width: 46px;
+    height: 46px;
+    border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+  }
+
   @media (min-width: 600px) {
     .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
@@ -415,6 +604,99 @@
 
     #home h1 {
       font-size: 2.95rem;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .nav-inner {
+      padding-top: 0.55rem;
+      padding-bottom: 0.55rem;
+      display: grid;
+      grid-template-columns: auto;
+      justify-items: start;
+      gap: 0.55rem;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+    }
+
+    #primary-menu {
+      display: none;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.2rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      padding: 0.45rem;
+    }
+
+    #primary-menu.is-open {
+      display: flex;
+    }
+
+    #primary-menu li {
+      width: auto;
+    }
+
+    #primary-menu a,
+    #primary-menu .theme-toggle {
+      display: inline-block;
+      width: auto;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    #primary-menu .theme-toggle {
+      border: 1px solid var(--border);
+      background: transparent;
+    }
+
+    nav a::after {
+      display: none;
+    }
+
+    .theme-item {
+      padding: 0;
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus {
+      transform: none;
+    }
+  }
+
+  @media (min-width: 921px) {
+    .theme-item {
+      margin-left: 0.4rem;
+    }
+
+    #primary-menu .theme-toggle {
+      margin-left: 0.25rem;
+    }
+
+    #primary-menu .theme-toggle:hover,
+    #primary-menu .theme-toggle:focus {
+      transform: translateY(-1px);
+    }
+
+    .nav-toggle {
+      display: none !important;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .cursor-dot,
+    .cursor-ring {
+      display: none !important;
+    }
+
+    body {
+      cursor: auto !important;
     }
   }
 
@@ -463,24 +745,46 @@
 </head>
 <body>
 
+<canvas id="web-bg" aria-hidden="true"></canvas>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
 <nav aria-label="Primary navigation">
-  <ul>
-    <li><a href="#home" tabindex="0">Home</a></li>
-    <li><a href="#about" tabindex="0">About</a></li>
-    <li><a href="#resume" tabindex="0">Resume</a></li>
-    <li><a href="#projects" tabindex="0">Projects</a></li>
-    <li><a href="#skills" tabindex="0">Skills</a></li>
-    <li><a href="#reflections" tabindex="0">Reflections</a></li>
-    <li><a href="#achievements" tabindex="0">Achievements</a></li>
-    <li><a href="#contact" tabindex="0">Contact</a></li>
-  </ul>
+  <div class="nav-inner">
+    <button
+      id="nav-toggle"
+      class="nav-toggle"
+      type="button"
+      aria-label="Toggle navigation menu"
+      aria-controls="primary-menu"
+      aria-expanded="false"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <ul id="primary-menu">
+      <li><a href="#home" tabindex="0">Home</a></li>
+      <li><a href="#about" tabindex="0">About</a></li>
+      <li><a href="#skills" tabindex="0">Skills</a></li>
+      <li><a href="#services" tabindex="0">Services</a></li>
+      <li><a href="#projects" tabindex="0">Projects</a></li>
+      <li><a href="#resume" tabindex="0">Resume</a></li>
+      <li><a href="#reflections" tabindex="0">Reflections</a></li>
+      <li><a href="#achievements" tabindex="0">Achievements</a></li>
+      <li><a href="#contact" tabindex="0">Contact</a></li>
+      <li class="theme-item">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color mode" aria-pressed="false">Dark Mode</button>
+      </li>
+    </ul>
+  </div>
 </nav>
 
 <main class="container" role="main">
 
   <section id="home" tabindex="0" aria-label="Introduction homepage">
-    <h1>Hi , I am Shankar</h1>
-    <img src="shankar.jpg" alt="Professional photo or avatar of Me" />
+    <h1>Hi, I am Shankar</h1>
+    <img src="shankar.jpg" alt="Professional photo or avatar of me" />
     <p class="tagline">Innovative Computer Science Student & Aspiring Developer</p>
     <p class="career-goals">My goal is to create impactful software solutions through continuous learning and collaboration.</p>
   </section>
@@ -500,7 +804,7 @@
     <article class="card" tabindex="0">
       <h3>Education</h3>
       <ul>
-        <li><strong>CMR Institute of Technology Hyderabad</strong> — B.Tech in Computer Science Engineering (2025 - Present)</li>
+        <li><strong>CMR Institute of Technology Hyderabad</strong> - B.Tech in Computer Science Engineering (2025 - Present)</li>
       </ul>
 
       <h3>Achievements, Awards & Certifications</h3>
@@ -522,30 +826,6 @@
         <a href="resume.jpg" class="btn" download="Shankar-Resume.jpg" tabindex="0">Download Resume</a>
       </p>
     </article>
-  </section>
-
-  <section id="projects" tabindex="0" aria-label="Work samples and projects">
-    <h2>Work Samples / Projects</h2>
-    <div class="projects-grid">
-      <article class="card project-card" tabindex="0">
-        <h3 class="project-title">My Portfolio Website</h3>
-        <p class="project-desc">Created a responsive personal portfolio site showcasing projects and skills.</p>
-        <p class="project-tools">HTML, CSS, JavaScript</p>
-        <a href="https://github.com/Shankar-127/Myportfolio.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
-      </article>
-      <article class="card project-card" tabindex="0">
-        <h3 class="project-title">Simple Game Program (Floppy Bird)</h3>
-        <p class="project-desc">Developed several beginner to intermediate level programs using html,Css, & javascript.</p>
-        <p class="project-tools">HTML, CSS, JavaScript</p>
-        <a href="https://github.com/Shankar-127/GameOne.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
-      </article>
-      <article class="card project-card" tabindex="0">
-        <h3 class="project-title">Web Development Project (Free Online Notes)</h3>
-        <p class="project-desc">Built responsive webpages using HTML, CSS and JavaScript with interactive elements.</p>
-        <p class="project-tools">HTML, CSS, JavaScript</p>
-        <a href="https://github.com/Shankar-127/YodhaEmpire.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
-      </article>
-    </div>
   </section>
 
   <section id="skills" tabindex="0" aria-label="Skills and competencies">
@@ -575,6 +855,45 @@
     </div>
   </section>
 
+  <section id="services" tabindex="0" aria-label="Services I offer">
+    <h2>Services</h2>
+    <div class="services-grid">
+      <article class="card service-box" tabindex="0">
+        <h3>Web Development</h3>
+        <p>I create modern and responsive portfolio websites for students and freshers. I help individuals showcase their skills, projects, and achievements professionally online.</p>
+      </article>
+      <article class="card service-box" tabindex="0">
+        <h3>Content Writing</h3>
+        <p>I write professional content for portfolios, resumes, LinkedIn profiles, and project descriptions to help students and professionals build a strong online presence.</p>
+      </article>
+    </div>
+    <p class="services-cta">Contact me if you need a portfolio website or professional content writing.</p>
+  </section>
+
+  <section id="projects" tabindex="0" aria-label="Work samples and projects">
+    <h2>Work Samples / Projects</h2>
+    <div class="projects-grid">
+      <article class="card project-card" tabindex="0">
+        <h3 class="project-title">My Portfolio Website</h3>
+        <p class="project-desc">Created a responsive personal portfolio site showcasing projects and skills.</p>
+        <p class="project-tools">HTML, CSS, JavaScript</p>
+        <a href="https://github.com/Shankar-127/Myportfolio.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
+      </article>
+      <article class="card project-card" tabindex="0">
+        <h3 class="project-title">Simple Game Program (Floppy Bird)</h3>
+        <p class="project-desc">Developed several beginner to intermediate level programs using HTML, CSS, and JavaScript.</p>
+        <p class="project-tools">HTML, CSS, JavaScript</p>
+        <a href="https://github.com/Shankar-127/GameOne.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
+      </article>
+      <article class="card project-card" tabindex="0">
+        <h3 class="project-title">Web Development Project (Free Online Notes)</h3>
+        <p class="project-desc">Built responsive webpages using HTML, CSS and JavaScript with interactive elements.</p>
+        <p class="project-tools">HTML, CSS, JavaScript</p>
+        <a href="https://github.com/Shankar-127/YodhaEmpire.git" class="btn" target="_blank" rel="noopener noreferrer">View GitHub</a>
+      </article>
+    </div>
+  </section>
+
   <section id="reflections" tabindex="0" aria-label="Reflections and learning">
     <h2>Reflections and Learning</h2>
     <p>Through my projects, I have learned the importance of clear planning, continuous testing, and user-focused design. Some challenges I faced involved debugging complex code and managing time efficiently. Overcoming these challenges taught me perseverance and effective problem-solving strategies, which I continue to apply in my development work.</p>
@@ -586,7 +905,7 @@
       <li>Certified C Programming Fundamentals Course - 2025</li>
       <li>Ranked Top 10% in Programming Fundamentals - 2025</li>
       <li>Active Contributor to coding club and college events</li>
-      <li>AI Agents  Online Certification (2026)</li>
+      <li>AI Agents Online Certification (2026)</li>
     </ul>
   </section>
 
@@ -606,7 +925,7 @@
       <p>Connect with me on:</p>
       <div class="social-links" aria-label="Social media links">
         <a href="https://www.linkedin.com/in/shankar-bod1207" target="_blank" rel="noopener noreferrer" tabindex="0">LinkedIn</a> |
-        <a href="https://github.com/Shankar-127" target="_blank" rel="noopener noreferrer" tabindex="0">GitHub</a> 
+        <a href="https://github.com/Shankar-127" target="_blank" rel="noopener noreferrer" tabindex="0">GitHub</a>
       </div>
     </div>
   </section>
@@ -617,11 +936,123 @@
   <p>&copy; 2026 Shankar. All rights reserved.</p>
   <p class="social-links" aria-label="Footer social links">
     <a href="https://www.linkedin.com/in/shankar-bod1207" target="_blank" rel="noopener noreferrer" tabindex="0">LinkedIn</a> |
-    <a href="https://github.com/Shankar-127" target="_blank" rel="noopener noreferrer" tabindex="0">GitHub</a> 
+    <a href="https://github.com/Shankar-127" target="_blank" rel="noopener noreferrer" tabindex="0">GitHub</a>
   </p>
 </footer>
 
 <script>
+  const webCanvas = document.getElementById("web-bg");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (webCanvas && !reduceMotion) {
+    const ctx = webCanvas.getContext("2d");
+    if (!ctx) {
+      webCanvas.remove();
+    } else {
+    const points = [];
+    const maxPoints = 48;
+    const linkDistance = 150;
+    const speed = 0.28;
+    let width = 0;
+    let height = 0;
+
+    const pickColor = () => {
+      const styles = getComputedStyle(document.documentElement);
+      return {
+        node: styles.getPropertyValue("--accent").trim() || "#0ea5e9",
+        line: styles.getPropertyValue("--accent-2").trim() || "#f97316"
+      };
+    };
+
+    let palette = pickColor();
+
+    const resizeCanvas = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = window.devicePixelRatio || 1;
+      webCanvas.width = Math.floor(width * ratio);
+      webCanvas.height = Math.floor(height * ratio);
+      webCanvas.style.width = `${width}px`;
+      webCanvas.style.height = `${height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+
+    const createPoint = () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * speed,
+      vy: (Math.random() - 0.5) * speed
+    });
+
+    const initPoints = () => {
+      points.length = 0;
+      const dynamicCount = Math.min(maxPoints, Math.max(30, Math.floor((width * height) / 28000)));
+      for (let i = 0; i < dynamicCount; i += 1) {
+        points.push(createPoint());
+      }
+    };
+
+    const animateWeb = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        p.x = Math.max(0, Math.min(width, p.x));
+        p.y = Math.max(0, Math.min(height, p.y));
+
+        ctx.beginPath();
+        ctx.fillStyle = palette.node;
+        ctx.globalAlpha = 0.34;
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (let i = 0; i < points.length; i += 1) {
+        for (let j = i + 1; j < points.length; j += 1) {
+          const a = points[i];
+          const b = points[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < linkDistance) {
+            const alpha = 1 - dist / linkDistance;
+            ctx.beginPath();
+            ctx.strokeStyle = palette.line;
+            ctx.globalAlpha = alpha * 0.22;
+            ctx.lineWidth = 1;
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animateWeb);
+    };
+
+    resizeCanvas();
+    initPoints();
+    animateWeb();
+
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      initPoints();
+    });
+
+    window.addEventListener("themechange", () => {
+      palette = pickColor();
+    });
+    }
+  }
+
   const revealTargets = document.querySelectorAll("section, .card, .skill-column, footer");
   revealTargets.forEach((item) => item.classList.add("reveal"));
 
@@ -641,6 +1072,107 @@
   );
 
   revealTargets.forEach((item) => revealObserver.observe(item));
+
+  const themeToggle = document.getElementById("theme-toggle");
+  const navToggle = document.getElementById("nav-toggle");
+  const primaryMenu = document.getElementById("primary-menu");
+
+  if (navToggle && primaryMenu) {
+    const closeMobileMenu = () => {
+      navToggle.setAttribute("aria-expanded", "false");
+      primaryMenu.classList.remove("is-open");
+    };
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!isOpen));
+      primaryMenu.classList.toggle("is-open", !isOpen);
+    });
+
+    primaryMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.matchMedia("(max-width: 920px)").matches) {
+          closeMobileMenu();
+        }
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 920) {
+        closeMobileMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMobileMenu();
+      }
+    });
+  }
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    const isDark = theme === "dark";
+    themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
+    themeToggle.setAttribute("aria-pressed", String(isDark));
+    window.dispatchEvent(new Event("themechange"));
+  }
+
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+  setTheme(initialTheme);
+
+  themeToggle.addEventListener("click", () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+  });
+
+  const cursorDot = document.querySelector(".cursor-dot");
+  const cursorRing = document.querySelector(".cursor-ring");
+  const canUseCursor =
+    window.matchMedia("(pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (canUseCursor && cursorDot && cursorRing) {
+    document.body.classList.add("custom-cursor");
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    const setCursorVisibility = (visible) => {
+      const opacity = visible ? "1" : "0";
+      cursorDot.style.opacity = opacity;
+      cursorRing.style.opacity = opacity;
+    };
+
+    window.addEventListener("mousemove", (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      setCursorVisibility(true);
+    });
+
+    const animateRing = () => {
+      ringX += (mouseX - ringX) * 0.2;
+      ringY += (mouseY - ringY) * 0.2;
+      cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      requestAnimationFrame(animateRing);
+    };
+    animateRing();
+
+    document.querySelectorAll("a, button, .btn, input, textarea").forEach((element) => {
+      element.addEventListener("mouseenter", () => cursorRing.classList.add("is-active"));
+      element.addEventListener("mouseleave", () => cursorRing.classList.remove("is-active"));
+    });
+
+    document.addEventListener("mouseleave", () => setCursorVisibility(false));
+    document.addEventListener("mouseenter", () => setCursorVisibility(true));
+  }
 
   const form = document.getElementById("contact-form");
   const formMessage = document.getElementById("form-message");
@@ -681,5 +1213,3 @@
 
 </body>
 </html>
-
-
